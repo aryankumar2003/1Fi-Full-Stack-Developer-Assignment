@@ -51,11 +51,11 @@ const ProductPage = () => {
         return (
             <div className="min-h-screen pt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-pulse">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                    <div className="aspect-square bg-slate-800 rounded-3xl" />
+                    <div className="aspect-square bg-gray-100 rounded-2xl" />
                     <div className="space-y-4">
-                        <div className="h-8 bg-slate-800 rounded w-3/4" />
-                        <div className="h-5 bg-slate-800 rounded w-1/2" />
-                        <div className="h-12 bg-slate-800 rounded w-1/3 mt-6" />
+                        <div className="h-8 bg-gray-100 rounded w-3/4" />
+                        <div className="h-5 bg-gray-100 rounded w-1/2" />
+                        <div className="h-12 bg-gray-100 rounded w-1/3 mt-6" />
                     </div>
                 </div>
             </div>
@@ -64,11 +64,11 @@ const ProductPage = () => {
 
     if (error || !data) {
         return (
-            <div className="min-h-screen pt-24 flex items-center justify-center">
+            <div className="min-h-screen pt-24 flex items-center justify-center bg-gray-50">
                 <div className="text-center">
                     <div className="text-6xl mb-4">🔍</div>
-                    <p className="text-red-400 text-lg font-semibold">{error || 'Product not found'}</p>
-                    <Link to="/" className="mt-4 inline-block text-blue-400 hover:text-blue-300 underline text-sm">
+                    <p className="text-red-500 text-lg font-semibold">{error || 'Product not found'}</p>
+                    <Link to="/" className="mt-4 inline-block text-violet-600 hover:text-violet-700 underline text-sm">
                         ← Browse all products
                     </Link>
                 </div>
@@ -81,31 +81,48 @@ const ProductPage = () => {
         ? Math.round(((selectedVariant.mrp - selectedVariant.price) / selectedVariant.mrp) * 100)
         : 0;
 
+    // Compute EMI monthly amounts using the standard reducing-balance formula,
+    // applied to the currently selected variant's price.
+    const calcMonthly = (price: number, interestRate: number, tenure: number): number => {
+        if (interestRate === 0) return Math.round(price / tenure);
+        const r = interestRate / 1200;
+        return Math.round((price * r * Math.pow(1 + r, tenure)) / (Math.pow(1 + r, tenure) - 1));
+    };
+
+    const adjustedEmiPlans = emiPlans.map((plan) => ({
+        ...plan,
+        monthlyAmount: selectedVariant
+            ? calcMonthly(selectedVariant.price, plan.interestRate, plan.tenure)
+            : plan.monthlyAmount,
+    }));
+
     return (
-        <div className="min-h-screen pt-20 pb-20">
+        <div className="min-h-screen bg-gray-50 pt-16 pb-20">
             {/* Breadcrumb */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                <div className="flex items-center gap-2 text-sm text-slate-500">
-                    <Link to="/" className="hover:text-slate-300 transition-colors">Products</Link>
-                    <span>/</span>
-                    <span className="text-slate-300">{product.name}</span>
+            <div className="bg-white border-b border-gray-200">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+                    <div className="flex items-center gap-2 text-sm text-gray-400">
+                        <Link to="/" className="hover:text-violet-600 transition-colors">Products</Link>
+                        <span>/</span>
+                        <span className="text-gray-700 font-medium">{product.name}</span>
+                    </div>
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16">
 
                     {/* ── Left: Image Gallery ── */}
                     <div className="space-y-4">
-                        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 aspect-square border border-slate-700/50">
+                        <div className="relative rounded-2xl overflow-hidden bg-white border border-gray-200 aspect-square shadow-sm">
                             <img
                                 key={activeImage}
                                 src={activeImage || product.imageUrl}
                                 alt={product.name}
-                                className="w-full h-full object-cover animate-fade-in"
+                                className="w-full h-full object-cover"
                             />
                             {discount > 0 && (
-                                <div className="absolute top-4 left-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-bold px-3 py-1.5 rounded-xl shadow-lg">
+                                <div className="absolute top-4 left-4 bg-green-500 text-white text-sm font-bold px-3 py-1.5 rounded-lg shadow">
                                     {discount}% OFF
                                 </div>
                             )}
@@ -118,7 +135,9 @@ const ProductPage = () => {
                                     <button
                                         key={i}
                                         onClick={() => setActiveImage(img)}
-                                        className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${activeImage === img ? 'border-blue-500' : 'border-slate-700 opacity-60 hover:opacity-100'
+                                        className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all bg-white ${activeImage === img
+                                            ? 'border-violet-500'
+                                            : 'border-gray-200 opacity-70 hover:opacity-100'
                                             }`}
                                     >
                                         <img src={img} alt={`View ${i + 1}`} className="w-full h-full object-cover" />
@@ -132,26 +151,26 @@ const ProductPage = () => {
                     <div className="space-y-6">
                         {/* Brand + Name */}
                         <div>
-                            <span className="text-xs font-bold text-blue-400 uppercase tracking-widest">{product.brand}</span>
-                            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-100 leading-snug mt-1">
+                            <span className="text-xs font-bold text-violet-600 uppercase tracking-widest">{product.brand}</span>
+                            <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 leading-snug mt-1">
                                 {product.name}
                             </h1>
-                            <p className="text-slate-400 text-sm mt-2 leading-relaxed">{product.description}</p>
+                            <p className="text-gray-500 text-sm mt-2 leading-relaxed">{product.description}</p>
                         </div>
 
                         {/* Pricing */}
                         {selectedVariant && (
-                            <div className="glass rounded-2xl p-5">
+                            <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
                                 <div className="flex items-end gap-3">
-                                    <span className="text-3xl font-extrabold text-slate-100">{formatINR(selectedVariant.price)}</span>
+                                    <span className="text-3xl font-extrabold text-gray-900">{formatINR(selectedVariant.price)}</span>
                                     {selectedVariant.mrp > selectedVariant.price && (
                                         <>
-                                            <span className="text-slate-500 line-through text-lg">{formatINR(selectedVariant.mrp)}</span>
-                                            <span className="text-emerald-400 font-bold text-sm">Save {formatINR(selectedVariant.mrp - selectedVariant.price)}</span>
+                                            <span className="text-gray-400 line-through text-lg">{formatINR(selectedVariant.mrp)}</span>
+                                            <span className="text-green-600 font-bold text-sm">Save {formatINR(selectedVariant.mrp - selectedVariant.price)}</span>
                                         </>
                                     )}
                                 </div>
-                                <p className="text-xs text-slate-500 mt-1">Inclusive of all taxes</p>
+                                <p className="text-xs text-gray-400 mt-1">Inclusive of all taxes</p>
                             </div>
                         )}
 
@@ -162,18 +181,18 @@ const ProductPage = () => {
                             onSelect={handleVariantSelect}
                         />
 
-                        <div className="border-t border-slate-800" />
+                        <div className="border-t border-gray-200" />
 
                         {/* EMI Plans */}
                         <div>
                             <div className="flex items-center justify-between mb-4">
-                                <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">
+                                <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                                     Choose EMI Plan
                                 </h2>
-                                <span className="text-xs text-slate-500">{emiPlans.length} plans available</span>
+                                <span className="text-xs text-gray-400">{adjustedEmiPlans.length} plans available</span>
                             </div>
                             <div className="space-y-3">
-                                {emiPlans.map((plan) => (
+                                {adjustedEmiPlans.map((plan) => (
                                     <EmiPlanCard
                                         key={plan._id}
                                         plan={plan}
@@ -187,7 +206,7 @@ const ProductPage = () => {
                         {/* Proceed Button */}
                         <div className="sticky bottom-4 pt-2">
                             {proceeded ? (
-                                <div className="w-full py-4 rounded-2xl bg-emerald-600 text-white font-bold text-center text-lg shadow-xl shadow-emerald-900/40 animate-fade-in">
+                                <div className="w-full py-4 rounded-xl bg-green-500 text-white font-bold text-center text-lg shadow-lg">
                                     ✅ Plan Selected! Proceeding...
                                 </div>
                             ) : (
@@ -195,17 +214,16 @@ const ProductPage = () => {
                                     onClick={handleProceed}
                                     disabled={!selectedPlan || !selectedVariant}
                                     id="proceed-btn"
-                                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 disabled:from-slate-700 disabled:to-slate-700 disabled:cursor-not-allowed text-white font-bold text-lg transition-all duration-200 shadow-xl shadow-blue-900/40 hover:shadow-blue-900/60 hover:-translate-y-0.5 active:translate-y-0"
+                                    className="w-full py-4 rounded-xl bg-orange-500 hover:bg-orange-600 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed text-white font-bold text-lg transition-all duration-200 shadow-lg hover:shadow-orange-200 hover:-translate-y-0.5 active:translate-y-0"
                                 >
                                     {selectedPlan
-                                        ? `Proceed with ${selectedPlan.tenure}-Month EMI @ ${formatINR(selectedPlan.monthlyAmount)}/mo`
+                                        ? `Proceed with ${selectedPlan.tenure}-Month EMI @ ${formatINR(adjustedEmiPlans.find(p => p._id === selectedPlan._id)?.monthlyAmount ?? selectedPlan.monthlyAmount)}/mo`
                                         : 'Select an EMI Plan to Proceed'}
                                 </button>
                             )}
                             {selectedPlan && selectedVariant && (
-                                <p className="text-center text-xs text-slate-500 mt-2">
-                                    Total: {formatINR(selectedPlan.monthlyAmount * selectedPlan.tenure)} ·
-                                    {selectedPlan.interestRate === 0 ? ' No extra cost' : ` ${selectedPlan.interestRate}% p.a. interest`}
+                                <p className="text-center text-xs text-gray-400 mt-2">
+                                    {(() => { const adj = adjustedEmiPlans.find(p => p._id === selectedPlan._id); const amt = adj?.monthlyAmount ?? selectedPlan.monthlyAmount; return <>Total: {formatINR(amt * selectedPlan.tenure)} · {selectedPlan.interestRate === 0 ? ' No extra cost' : ` ${selectedPlan.interestRate}% p.a. interest`}</>; })()}
                                 </p>
                             )}
                         </div>

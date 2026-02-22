@@ -13,16 +13,25 @@ const UNSPLASH_IMAGES = {
         'https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=600&q=80',
         'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=600&q=80',
         'https://images.unsplash.com/photo-1574755393849-623942496936?w=600&q=80',
+        'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=600&q=80',
+        'https://images.unsplash.com/photo-1567581935884-3349723552ca?w=600&q=80',
+        'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80',
     ],
     samsung: [
         'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=600&q=80',
         'https://images.unsplash.com/photo-1562345804-29c18c61d9d0?w=600&q=80',
         'https://images.unsplash.com/photo-1706300896423-7d08346e8dbb?q=80&w=600',
+        'https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=600&q=80',
+        'https://images.unsplash.com/photo-1618410320928-25228d811631?w=600&q=80',
+        'https://images.unsplash.com/photo-1605236453806-6ff36851218e?w=600&q=80',
     ],
     oneplus: [
-        'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600&q=80',
-        'https://images.unsplash.com/photo-1568586236850-9cf8bca5cb6e?w=600&q=80',
-        'https://images.unsplash.com/photo-1631281956016-3cdc1b2fe5fb?w=600&q=80',
+        'https://images.unsplash.com/photo-1607138802860-555d4b0614f6?q=80&w=600',
+        'https://images.unsplash.com/photo-1662627488889-3affc6ee6493?q=80&w=600',
+        'https://images.unsplash.com/photo-1757847633980-b640b22ed317?q=80&w=600',
+        'https://images.unsplash.com/photo-1757847505239-ce2fb51da67d?q=80&w=600',
+        'https://images.unsplash.com/photo-1662627487895-3bf08b56f2ee?q=80&w=600',
+        'https://images.unsplash.com/photo-1629889950243-bd4247db18b0?q=80&w=600',
     ],
 };
 
@@ -55,7 +64,12 @@ async function seed() {
                 color: 'Natural Titanium',
                 mrp: 134900,
                 price: 129900,
-                images: [UNSPLASH_IMAGES.iphone[0], UNSPLASH_IMAGES.iphone[1]],
+                images: [
+                    UNSPLASH_IMAGES.iphone[0],
+                    UNSPLASH_IMAGES.iphone[1],
+                    UNSPLASH_IMAGES.iphone[2],
+                    UNSPLASH_IMAGES.iphone[3],
+                ],
             },
             {
                 productId: iphone._id,
@@ -64,7 +78,12 @@ async function seed() {
                 color: 'Black Titanium',
                 mrp: 154900,
                 price: 149900,
-                images: [UNSPLASH_IMAGES.iphone[2], UNSPLASH_IMAGES.iphone[0]],
+                images: [
+                    UNSPLASH_IMAGES.iphone[2],
+                    UNSPLASH_IMAGES.iphone[3],
+                    UNSPLASH_IMAGES.iphone[4],
+                    UNSPLASH_IMAGES.iphone[0],
+                ],
             },
             {
                 productId: iphone._id,
@@ -73,7 +92,12 @@ async function seed() {
                 color: 'White Titanium',
                 mrp: 174900,
                 price: 169900,
-                images: [UNSPLASH_IMAGES.iphone[1], UNSPLASH_IMAGES.iphone[2]],
+                images: [
+                    UNSPLASH_IMAGES.iphone[4],
+                    UNSPLASH_IMAGES.iphone[5],
+                    UNSPLASH_IMAGES.iphone[1],
+                    UNSPLASH_IMAGES.iphone[3],
+                ],
             },
         ]);
 
@@ -138,7 +162,12 @@ async function seed() {
                 color: 'Titanium Gray',
                 mrp: 131999,
                 price: 124999,
-                images: [UNSPLASH_IMAGES.samsung[0], UNSPLASH_IMAGES.samsung[1]],
+                images: [
+                    UNSPLASH_IMAGES.samsung[0],
+                    UNSPLASH_IMAGES.samsung[1],
+                    UNSPLASH_IMAGES.samsung[2],
+                    UNSPLASH_IMAGES.samsung[3],
+                ],
             },
             {
                 productId: samsung._id,
@@ -147,7 +176,12 @@ async function seed() {
                 color: 'Titanium Black',
                 mrp: 151999,
                 price: 144999,
-                images: [UNSPLASH_IMAGES.samsung[2], UNSPLASH_IMAGES.samsung[0]],
+                images: [
+                    UNSPLASH_IMAGES.samsung[2],
+                    UNSPLASH_IMAGES.samsung[3],
+                    UNSPLASH_IMAGES.samsung[4],
+                    UNSPLASH_IMAGES.samsung[0],
+                ],
             },
             {
                 productId: samsung._id,
@@ -156,7 +190,12 @@ async function seed() {
                 color: 'Titanium WhiteSilver',
                 mrp: 167999,
                 price: 159999,
-                images: [UNSPLASH_IMAGES.samsung[1], UNSPLASH_IMAGES.samsung[2]],
+                images: [
+                    UNSPLASH_IMAGES.samsung[4],
+                    UNSPLASH_IMAGES.samsung[5],
+                    UNSPLASH_IMAGES.samsung[1],
+                    UNSPLASH_IMAGES.samsung[3],
+                ],
             },
         ]);
 
@@ -220,7 +259,12 @@ async function seed() {
                 color: 'Midnight Ocean',
                 mrp: 72999,
                 price: 69999,
-                images: [UNSPLASH_IMAGES.oneplus[0], UNSPLASH_IMAGES.oneplus[1]],
+                images: [
+                    UNSPLASH_IMAGES.oneplus[0],
+                    UNSPLASH_IMAGES.oneplus[1],
+                    UNSPLASH_IMAGES.oneplus[2],
+                    UNSPLASH_IMAGES.oneplus[3],
+                ],
             },
             {
                 productId: oneplus._id,
@@ -229,7 +273,12 @@ async function seed() {
                 color: 'Black Eclipse',
                 mrp: 82999,
                 price: 79999,
-                images: [UNSPLASH_IMAGES.oneplus[2], UNSPLASH_IMAGES.oneplus[0]],
+                images: [
+                    UNSPLASH_IMAGES.oneplus[3],
+                    UNSPLASH_IMAGES.oneplus[4],
+                    UNSPLASH_IMAGES.oneplus[5],
+                    UNSPLASH_IMAGES.oneplus[0],
+                ],
             },
         ]);
 

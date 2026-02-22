@@ -122,15 +122,20 @@ Stores EMI financing options for a product. Multiple plans belong to one product
 | `_id` | ObjectId | auto | — | MongoDB document ID |
 | `productId` | ObjectId | ✅ | — | Reference to `products._id` |
 | `label` | String | ✅ | — | Plan name (e.g. "6-Month EMI") |
-| `monthlyAmount` | Number | ✅ | — | Monthly EMI amount (in ₹) |
 | `tenure` | Number | ✅ | — | Number of months |
-| `interestRate` | Number | ✅ | `0` | Annual interest rate (%) |
+| `interestRate` | Number | ✅ | `0` | Annual interest rate (% p.a.) |
 | `cashback` | Number | — | `0` | Cashback offered (in ₹) |
 | `cashbackDescription` | String | — | `""` | Cashback offer details |
 | `isPopular` | Boolean | — | `false` | Highlights the recommended plan |
 | `createdAt` | Date | auto | — | Mongoose timestamp |
 | `updatedAt` | Date | auto | — | Mongoose timestamp |
 
+> `monthlyAmount` is **not stored** in the database. It is computed dynamically by the backend using the standard reducing-balance EMI formula:
+> - **0% interest:** `monthlyAmount = price / tenure`
+> - **Non-zero interest:** `monthlyAmount = P × r × (1+r)ⁿ / ((1+r)ⁿ − 1)` where `r = interestRate / 1200`, `n = tenure`
+>
+> The frontend applies the same formula when the user switches variants, ensuring the displayed EMI always reflects the selected variant's price.
+>
 > `productId` is indexed for efficient EMI plan lookups per product.
 
 ---
@@ -207,7 +212,7 @@ Returns full details for a single product including all variants and EMI plans.
       { "_id": "...", "label": "256 GB – Natural Titanium", "storage": "256 GB", "price": 129900, "..." : "..." }
     ],
     "emiPlans": [
-      { "_id": "...", "label": "6-Month EMI", "monthlyAmount": 22650, "tenure": 6, "isPopular": true, "..." : "..." }
+      { "_id": "...", "label": "6-Month EMI", "monthlyAmount": 22539, "tenure": 6, "interestRate": 6.5, "isPopular": true, "..." : "..." }
     ]
   }
 }
@@ -228,7 +233,7 @@ The seed script (`src/seed.ts`) populates the database with **3 products**, each
 |---|---|---|---|
 | Apple iPhone 17 Pro | 3 (256GB, 512GB, 1TB) | 4 (3/6/9/12 months) | ₹1,29,900 – ₹1,69,900 |
 | Samsung Galaxy S25 Ultra | 3 (256GB, 512GB, 1TB) | 4 (3/6/9/12 months) | ₹1,24,999 – ₹1,59,999 |
-| OnePlus 13 | 2 (256GB, 512GB) | 3 (3/6/9 months) | ₹69,999 – ₹79,999 |
+| OnePlus 13 | 2 (256GB, 512GB) | 4 (3/6/9/12 months) | ₹69,999 – ₹79,999 |
 
 ---
 
@@ -299,16 +304,28 @@ The app will be available at: `http://localhost:5173`
 | Route | Component | Description |
 |---|---|---|
 | `/` | `HomePage.tsx` | Lists all products with variant count and price range |
-| `/:slug` | `ProductPage.tsx` | Product detail with variant selector and EMI plan cards |
+| `/products/:slug` | `ProductPage.tsx` | Product detail with variant selector and EMI plan cards |
 
 ## Frontend Components
 
 | Component | Description |
 |---|---|
-| `Navbar` | Top navigation with brand logo and links |
+| `Navbar` | Top navigation — Products link only |
 | `ProductCard` | Displays a product summary on the home page |
-| `VariantSelector` | Allows the user to switch between storage/color variants |
-| `EmiPlanCard` | Displays a single EMI plan with tenure, rate, and cashback info |
+| `VariantSelector` | Allows the user to switch between storage/color variants; EMI plans update in real time |
+| `EmiPlanCard` | Displays a single EMI plan with computed monthly amount, tenure, rate, and cashback info |
+
+## UI Theme
+
+The interface follows a **Snapmint-inspired light design system:**
+
+| Token | Value | Usage |
+|---|---|---|
+| Primary | `violet-600` | Selected states, brand labels, links |
+| CTA | `orange-500` | Proceed/checkout button |
+| Trust | `green-600/50` | 0% EMI badge, discount label |
+| Background | `gray-50` / `white` | Page background / card background |
+| Text | `gray-900` / `gray-500` | Headings / body copy |
 
 ---
 

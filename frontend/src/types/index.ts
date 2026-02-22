@@ -28,12 +28,12 @@ export interface IEmiPlan {
     _id: string;
     productId: string;
     label: string;
-    monthlyAmount: number;
     tenure: number;
     interestRate: number;
     cashback: number;
     cashbackDescription: string;
     isPopular: boolean;
+    monthlyAmount: number; // computed by backend; scaled by frontend per selected variant
 }
 
 export interface IProductDetail {

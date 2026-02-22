@@ -6,28 +6,47 @@
   * {
     box-sizing: border-box;
   }
+
   body {
-    @apply bg-slate-950 text-slate-100 font-sans antialiased;
+    @apply bg-gray-50 text-gray-900 font-sans antialiased;
     margin: 0;
   }
+
   ::-webkit-scrollbar {
     width: 6px;
   }
+
   ::-webkit-scrollbar-track {
-    @apply bg-slate-900;
+    @apply bg-gray-100;
   }
+
   ::-webkit-scrollbar-thumb {
-    @apply bg-slate-600 rounded-full;
+    @apply bg-gray-300 rounded-full;
   }
 }
 
 @layer utilities {
-  .glass {
-    background: rgba(30, 41, 59, 0.6);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(148, 163, 184, 0.1);
+  .card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   }
+
+  .card-hover {
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+
+  .card-hover:hover {
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.12);
+    transform: translateY(-2px);
+  }
+
   .gradient-text {
-    @apply bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-violet-600 to-purple-500 bg-clip-text text-transparent;
+  }
+
+  .snap-badge {
+    @apply bg-violet-50 text-violet-700 border border-violet-200 rounded-full px-3 py-0.5 text-xs font-semibold;
   }
 }
