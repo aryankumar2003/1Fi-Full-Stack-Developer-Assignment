@@ -17,7 +17,7 @@ const UNSPLASH_IMAGES = {
     samsung: [
         'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=600&q=80',
         'https://images.unsplash.com/photo-1562345804-29c18c61d9d0?w=600&q=80',
-        'https://images.unsplash.com/photo-1581993192008-63e896f4f744?w=600&q=80',
+        'https://images.unsplash.com/photo-1706300896423-7d08346e8dbb?q=80&w=600',
     ],
     oneplus: [
         'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600&q=80',
@@ -41,7 +41,7 @@ async function seed() {
             name: 'Apple iPhone 17 Pro',
             slug: 'iphone-17-pro',
             description:
-                'The iPhone 17 Pro features Apple\'s next-gen A19 Pro chip, a revolutionary camera system with 5x optical zoom, and a titanium design for unmatched performance and durability.',
+                "The iPhone 17 Pro features Apple's next-gen A19 Pro chip, a revolutionary camera system with 5x optical zoom, and a titanium design for unmatched performance and durability.",
             category: 'Smartphones',
             brand: 'Apple',
             imageUrl: UNSPLASH_IMAGES.iphone[0],
@@ -77,11 +77,11 @@ async function seed() {
             },
         ]);
 
+        // EMI plans: tenure (months) + interestRate (% p.a.) — monthlyAmount computed by backend
         await EmiPlan.insertMany([
             {
                 productId: iphone._id,
                 label: '3-Month No-Cost EMI',
-                monthlyAmount: 43300,
                 tenure: 3,
                 interestRate: 0,
                 cashback: 2000,
@@ -91,7 +91,6 @@ async function seed() {
             {
                 productId: iphone._id,
                 label: '6-Month EMI',
-                monthlyAmount: 22650,
                 tenure: 6,
                 interestRate: 6.5,
                 cashback: 1500,
@@ -101,7 +100,6 @@ async function seed() {
             {
                 productId: iphone._id,
                 label: '9-Month EMI',
-                monthlyAmount: 15800,
                 tenure: 9,
                 interestRate: 10.5,
                 cashback: 0,
@@ -111,7 +109,6 @@ async function seed() {
             {
                 productId: iphone._id,
                 label: '12-Month EMI',
-                monthlyAmount: 12400,
                 tenure: 12,
                 interestRate: 14,
                 cashback: 0,
@@ -167,7 +164,6 @@ async function seed() {
             {
                 productId: samsung._id,
                 label: '3-Month No-Cost EMI',
-                monthlyAmount: 41666,
                 tenure: 3,
                 interestRate: 0,
                 cashback: 3000,
@@ -177,7 +173,6 @@ async function seed() {
             {
                 productId: samsung._id,
                 label: '6-Month EMI',
-                monthlyAmount: 21750,
                 tenure: 6,
                 interestRate: 6.5,
                 cashback: 2000,
@@ -187,7 +182,6 @@ async function seed() {
             {
                 productId: samsung._id,
                 label: '9-Month EMI',
-                monthlyAmount: 15200,
                 tenure: 9,
                 interestRate: 10.5,
                 cashback: 0,
@@ -197,7 +191,6 @@ async function seed() {
             {
                 productId: samsung._id,
                 label: '12-Month EMI',
-                monthlyAmount: 11900,
                 tenure: 12,
                 interestRate: 14,
                 cashback: 0,
@@ -244,7 +237,6 @@ async function seed() {
             {
                 productId: oneplus._id,
                 label: '3-Month No-Cost EMI',
-                monthlyAmount: 23333,
                 tenure: 3,
                 interestRate: 0,
                 cashback: 1000,
@@ -254,7 +246,6 @@ async function seed() {
             {
                 productId: oneplus._id,
                 label: '6-Month EMI',
-                monthlyAmount: 12200,
                 tenure: 6,
                 interestRate: 6.5,
                 cashback: 500,
@@ -264,9 +255,17 @@ async function seed() {
             {
                 productId: oneplus._id,
                 label: '9-Month EMI',
-                monthlyAmount: 8500,
                 tenure: 9,
                 interestRate: 10.5,
+                cashback: 0,
+                cashbackDescription: '',
+                isPopular: false,
+            },
+            {
+                productId: oneplus._id,
+                label: '12-Month EMI',
+                tenure: 12,
+                interestRate: 14,
                 cashback: 0,
                 cashbackDescription: '',
                 isPopular: false,
